@@ -1,9 +1,12 @@
 import { useState } from "react";
 
 import { MoreProductive } from "./MoreProductive";
+import MenuNavBar from "./MenuNavBar";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import { Container, Row, Col } from "react-bootstrap";
 
 // const ACTIONS = [
 //   { id: 0, name: "Faire du sport", checked: false, checkDate: null },
@@ -12,7 +15,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // ];
 
 function App() {
-  return <MoreProductive />;
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <MenuNavBar />
+        </Col>
+      </Row>
+      <MoreProductive />
+    </Container>
+  );
 }
 
 function NowSelfEmployed() {

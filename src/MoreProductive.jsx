@@ -80,12 +80,7 @@ export function MoreProductive() {
     );
   }
   return (
-    <Container>
-      <Row>
-        <Col>
-          <MenuNavBar />
-        </Col>
-      </Row>
+    <>
       <Row>
         <Col>
           <MenuBar onAddTask={handleAddTask} />
@@ -114,6 +109,6 @@ export function MoreProductive() {
           </TaskList>
         </Col>
       </Row>
-    </Container>
+    </>
   );
 }
