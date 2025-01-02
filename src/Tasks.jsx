@@ -34,7 +34,7 @@ export function Task({
         document.removeEventListener("keydown", callback);
       };
     },
-    [edited, handleEditTask]
+    [edited, handleEditTask, task.id]
   );
 
   return (
@@ -67,6 +67,7 @@ export function Task({
     </ListGroupItem>
   );
 }
+
 export function TaskList({ children }) {
   return <ListGroup as="ol">{children}</ListGroup>;
 }
