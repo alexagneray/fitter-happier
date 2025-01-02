@@ -1,13 +1,4 @@
-import {
-  Container,
-  Row,
-  Col,
-  Navbar,
-  Form,
-  FormControl,
-  Button,
-} from "react-bootstrap";
-import MenuNavBar from "./MenuNavBar";
+import { Row, Col, Navbar, Form, FormControl, Button } from "react-bootstrap";
 import { Task, TaskList } from "./Tasks.jsx";
 import { useEffect, useState } from "react";
 
@@ -40,8 +31,6 @@ function MenuBar({ onAddTask }) {
 }
 
 export function MoreProductive() {
-  //   const [count, setCount] = useState(0);
-
   const [tasks, setTasks] = useState(function () {
     const taskList = localStorage.getItem("taskList");
     return taskList ? JSON.parse(taskList) : [];
