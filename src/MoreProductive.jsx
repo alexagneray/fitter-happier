@@ -70,8 +70,10 @@ export function MoreProductive() {
       case "edit":
         return {
           ...state,
-          tasks: state.tasks.map((e) =>
-            e.id === action.payload.id ? { ...e, name: action.payload.name } : e
+          tasks: state.tasks.map((t) =>
+            t.id === action.payload.id
+              ? { ...t, name: action.payload.value }
+              : t
           ),
         };
       // case "check":
