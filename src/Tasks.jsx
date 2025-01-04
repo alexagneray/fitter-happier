@@ -4,12 +4,7 @@ import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 
 import { useEffect, useRef, useState } from "react";
 
-export function Task({
-  task,
-  handleCheckTask,
-  handleEditTask,
-  handleRemoveTask,
-}) {
+export function Task({ task, dispatcher }) {
   const [edited, setEdited] = useState(false);
   const inputEl = useRef(null);
 
@@ -23,8 +18,10 @@ export function Task({
 
       function callback(e) {
         if (e.code === "Enter" && document.activeElement === inputEl.current) {
-          console.log(inputEl.current);
-          handleEditTask(task.id, inputEl.current.value);
+          dispatcher({
+            type: "edit",
+            payload: { id: task.id, value: inputEl.current.value },
+          });
           setEdited((edited) => !edited);
         }
       }
@@ -34,7 +31,7 @@ export function Task({
         document.removeEventListener("keydown", callback);
       };
     },
-    [edited, handleEditTask, task.id]
+    [edited, dispatcher, task.id]
   );
 
   return (
@@ -48,7 +45,10 @@ export function Task({
       }
       // onMouseEnter={() => handleCheckAction(action)}
     >
-      <FormCheckInput onClick={handleCheckTask} defaultChecked={task.checked} />
+      <FormCheckInput
+        onClick={() => dispatcher({ type: "check", payload: { id: task.id } })}
+        defaultChecked={task.checked}
+      />
       {edited ? (
         <input defaultValue={task.name} ref={inputEl} />
       ) : (
@@ -60,7 +60,8 @@ export function Task({
           src="cross.jpg"
           width={32}
           onClick={() => {
-            confirm("Delete this task ?"), handleRemoveTask(task.id);
+            confirm("Delete this task ?"),
+              dispatcher({ type: "remove", payload: { id: task.id } });
           }}
         ></img>
       </Button>

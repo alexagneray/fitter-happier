@@ -1,15 +1,15 @@
 import { Row, Col, Navbar, Form, FormControl, Button } from "react-bootstrap";
 import { Task, TaskList } from "./Tasks.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 
-function MenuBar({ onAddTask }) {
+function MenuBar({ dispatcher }) {
   return (
     <Navbar className="bg-light justify-content-between">
       <Form
         className="d-flex d-sm-flex-column mt-2 mt-sm-0"
         onSubmit={(e) => {
           e.preventDefault();
-          onAddTask(e.target[0].value);
+          dispatcher({ type: "add", payload: { name: e.target[0].value } });
           e.target[0].value = "";
         }}
       >
@@ -31,10 +31,47 @@ function MenuBar({ onAddTask }) {
 }
 
 export function MoreProductive() {
-  const [tasks, setTasks] = useState(function () {
-    const taskList = localStorage.getItem("taskList");
-    return taskList ? JSON.parse(taskList) : [];
-  });
+  const [{ tasks }, dispatcher] = useReducer(
+    reducer,
+    { tasks: [] },
+    function () {
+      const taskList = localStorage.getItem("taskList");
+      return taskList ? { tasks: JSON.parse(taskList) } : { tasks: [] };
+    }
+  );
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case "add":
+        const taskAdded = {
+          id: state.tasks.length,
+          name: action.payload.name,
+          checked: false,
+        };
+        return { ...state, tasks: [...state.tasks, taskAdded] };
+      case "remove":
+        return {
+          ...state,
+          tasks: state.tasks.filter((e) => e.id !== action.payload.id),
+        };
+      case "edit":
+        return {
+          ...state,
+          tasks: state.tasks.map((e) =>
+            e.id === action.payload.id ? { ...e, name: action.payload.name } : e
+          ),
+        };
+      case "check":
+        return {
+          ...state,
+          tasks: state.tasks.map((e) =>
+            e.id === action.payload.id ? { ...e, checked: !e.checked } : e
+          ),
+        };
+      default:
+        throw new Error("Unknown type");
+    }
+  }
 
   useEffect(
     function () {
@@ -44,35 +81,11 @@ export function MoreProductive() {
     [tasks]
   );
 
-  function handleAddTask(taskName) {
-    const taskAdded = {
-      id: tasks.length,
-      name: taskName,
-      checked: false,
-    };
-    setTasks((tasks) => [...tasks, taskAdded]);
-  }
-
-  function handleRemoveTask(id) {
-    setTasks(() => tasks.filter((t) => t.id !== id));
-  }
-  function handleCheckTask(action) {
-    setTasks(() =>
-      tasks.map((a) => (a.id === action.id ? { ...a, checked: !a.checked } : a))
-    );
-  }
-
-  function handleEditTask(id, newName) {
-    console.log(`${id} and ${newName}`);
-    setTasks(() =>
-      tasks.map((a) => (a.id === id ? { ...a, name: newName } : a))
-    );
-  }
   return (
     <>
       <Row>
         <Col>
-          <MenuBar onAddTask={handleAddTask} />
+          <MenuBar dispatcher={dispatcher} />
         </Col>
       </Row>
       <Row>
@@ -87,13 +100,7 @@ export function MoreProductive() {
         <Col>
           <TaskList>
             {tasks.map((a) => (
-              <Task
-                key={a.id}
-                task={a}
-                handleCheckTask={() => handleCheckTask(a)}
-                handleEditTask={handleEditTask}
-                handleRemoveTask={handleRemoveTask}
-              />
+              <Task key={a.id} task={a} dispatcher={dispatcher} />
             ))}
           </TaskList>
         </Col>
