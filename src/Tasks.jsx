@@ -49,6 +49,23 @@ export function Task({ task, dispatcher }) {
         onClick={() => dispatcher({ type: "check", payload: { id: task.id } })}
         defaultChecked={task.checked}
       />
+      <Button
+        variant="btn bg-info"
+        onClick={() =>
+          dispatcher({ type: "previousStatus", payload: { id: task.id } })
+        }
+      >
+        Previous
+      </Button>
+      <span>{task.status.label}</span>
+      <Button
+        variant="btn bg-info"
+        onClick={() =>
+          dispatcher({ type: "nextStatus", payload: { id: task.id } })
+        }
+      >
+        Next
+      </Button>
       {edited ? (
         <input defaultValue={task.name} ref={inputEl} />
       ) : (

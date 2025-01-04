@@ -1,6 +1,7 @@
 import { Row, Col, Navbar, Form, FormControl, Button } from "react-bootstrap";
 import { Task, TaskList } from "./Tasks.jsx";
 import { useEffect, useState, useReducer } from "react";
+import Board from "./Board.jsx";
 
 function MenuBar({ dispatcher }) {
   return (
@@ -31,6 +32,16 @@ function MenuBar({ dispatcher }) {
 }
 
 export function MoreProductive() {
+  const status = {
+    todo: { name: "todo", label: "To Do", previous: null, next: "running" },
+    running: {
+      name: "running",
+      label: "Running",
+      previous: "todo",
+      next: "done",
+    },
+    done: { name: "done", label: "Done", previous: "running", next: null },
+  };
   const [{ tasks }, dispatcher] = useReducer(
     reducer,
     { tasks: [] },
@@ -47,7 +58,9 @@ export function MoreProductive() {
           id: state.tasks.length,
           name: action.payload.name,
           checked: false,
+          status: { ...status.todo },
         };
+        console.log(taskAdded);
         return { ...state, tasks: [...state.tasks, taskAdded] };
       case "remove":
         return {
@@ -61,11 +74,46 @@ export function MoreProductive() {
             e.id === action.payload.id ? { ...e, name: action.payload.name } : e
           ),
         };
-      case "check":
+      // case "check":
+      //   const tmp = {
+      //     ...state,
+      //     tasks: state.tasks.map((e) =>
+      //       e.id === action.payload.id
+      //         ? {
+      //             ...e,
+      //             checked: !e.checked,
+      //             status: { ...status.running },
+      //             // status: `${
+      //             //   !e.status.name.localeCompare("todo")
+      //             //     ? { ...status.running }
+      //             //     : { ...status.todo }
+      //             // }`,
+      //           }
+      //         : e
+      //     ),
+      //   };
+      //   console.log(tmp);
+      //   return tmp;
+      case "nextStatus":
         return {
           ...state,
-          tasks: state.tasks.map((e) =>
-            e.id === action.payload.id ? { ...e, checked: !e.checked } : e
+          tasks: state.tasks.map((t) =>
+            t.id === action.payload.id
+              ? t.status.next
+                ? { ...t, status: { ...status[t.status.next] } }
+                : t
+              : t
+          ),
+        };
+      case "previousStatus":
+        return {
+          ...state,
+          tasks: state.tasks.map((t) =>
+            t.id === action.payload.id
+              ? t.status.previous
+                ? { ...t, status: { ...status[t.status.previous] } }
+                : t
+              : t
           ),
         };
       default:
@@ -103,6 +151,11 @@ export function MoreProductive() {
               <Task key={a.id} task={a} dispatcher={dispatcher} />
             ))}
           </TaskList>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Board tasks={tasks} dispatcher={dispatcher} status={status} />
         </Col>
       </Row>
     </>
