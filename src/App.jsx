@@ -8,6 +8,9 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import GenericPage from "./pages/GenericPage";
+import MoreProductivePage from "./pages/MoreProductivePage";
+import WhyPage from "./pages/WhyPage";
 
 // const ACTIONS = [
 //   { id: 0, name: "Faire du sport", checked: false, checkDate: null },
@@ -19,14 +22,16 @@ function App() {
   return (
     <Container>
       <Row>
-        <Col>
-          <MenuNavBar />
-        </Col>
+        <Col></Col>
       </Row>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/moreproductive" element={<MoreProductive />}></Route>
+          <Route path="/" element={<GenericPage pageElem={<HomePage />} />} />
+          <Route
+            path="/moreproductive"
+            element={<GenericPage pageElem={<MoreProductivePage />} />}
+          />
+          <Route path="/why" element={<GenericPage pageElem={<WhyPage />} />} />
         </Routes>
       </BrowserRouter>
     </Container>
