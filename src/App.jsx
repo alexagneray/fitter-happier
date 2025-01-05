@@ -1,5 +1,5 @@
-import { MoreProductive } from "./MoreProductive";
-import MenuNavBar from "./MenuNavBar";
+import { MoreProductive } from "./components/MoreProductive";
+import MenuNavBar from "./components/MenuNavBar";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
