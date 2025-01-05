@@ -1,4 +1,4 @@
-import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
+import { ListGroup, Button, Table } from "react-bootstrap";
 
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 
@@ -35,54 +35,62 @@ export function Task({ task, dispatcher }) {
   );
 
   return (
-    <ListGroupItem
-      key={task.id}
-      as="li"
-      className={
-        task.checked
-          ? "d-flex justify-content-between align-items-start bg-warning"
-          : "d-flex justify-content-between align-items-start bg-light"
-      }
-      // onMouseEnter={() => handleCheckAction(action)}
-    >
-      <FormCheckInput
-        onClick={() => dispatcher({ type: "check", payload: { id: task.id } })}
-        defaultChecked={task.checked}
-      />
-      <Button
-        variant="btn bg-info"
-        onClick={() =>
-          dispatcher({ type: "previousStatus", payload: { id: task.id } })
-        }
-      >
-        Previous
-      </Button>
-      <span>{task.status.label}</span>
-      <Button
-        variant="btn bg-info"
-        onClick={() =>
-          dispatcher({ type: "nextStatus", payload: { id: task.id } })
-        }
-      >
-        Next
-      </Button>
-      {edited ? (
-        <input defaultValue={task.name} ref={inputEl} />
-      ) : (
-        <span onDoubleClick={handleDoubleClick}>{task.name}</span>
-      )}
-
-      <Button variant="link outline-danger">
-        <img
-          src="cross.jpg"
-          width={32}
-          onClick={() => {
-            confirm("Delete this task ?"),
-              dispatcher({ type: "remove", payload: { id: task.id } });
-          }}
-        ></img>
-      </Button>
-    </ListGroupItem>
+    <Table>
+      <tbody>
+        <tr>
+          <td width="5%">
+            <FormCheckInput
+              onClick={() =>
+                dispatcher({ type: "check", payload: { id: task.id } })
+              }
+              defaultChecked={task.checked}
+            />
+          </td>
+          <td width="5%">
+            <Button
+              variant="btn bg-info"
+              onClick={() =>
+                dispatcher({ type: "previousStatus", payload: { id: task.id } })
+              }
+            >
+              Previous
+            </Button>
+          </td>
+          <td width="20%">
+            <span>{task.status.label}</span>
+          </td>
+          <td width="5%">
+            <Button
+              variant="btn bg-info"
+              onClick={() =>
+                dispatcher({ type: "nextStatus", payload: { id: task.id } })
+              }
+            >
+              Next
+            </Button>
+          </td>
+          <td width="30%">
+            {edited ? (
+              <input defaultValue={task.name} ref={inputEl} />
+            ) : (
+              <span onDoubleClick={handleDoubleClick}>{task.name}</span>
+            )}
+          </td>
+          <td width="5%">
+            <Button variant="link outline-danger">
+              <img
+                src="cross.jpg"
+                width={32}
+                onClick={() => {
+                  confirm("Delete this task ?"),
+                    dispatcher({ type: "remove", payload: { id: task.id } });
+                }}
+              ></img>
+            </Button>
+          </td>
+        </tr>
+      </tbody>
+    </Table>
   );
 }
 
