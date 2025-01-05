@@ -6,6 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { Container, Row, Col } from "react-bootstrap";
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+
 // const ACTIONS = [
 //   { id: 0, name: "Faire du sport", checked: false, checkDate: null },
 //   { id: 1, name: "Lire un livre", checked: false, checkDate: null },
@@ -20,7 +23,12 @@ function App() {
           <MenuNavBar />
         </Col>
       </Row>
-      <MoreProductive />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/moreproductive" element={<MoreProductive />}></Route>
+        </Routes>
+      </BrowserRouter>
     </Container>
   );
 }
