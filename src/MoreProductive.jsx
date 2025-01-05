@@ -2,6 +2,7 @@ import { Row, Col, Navbar, Form, FormControl, Button } from "react-bootstrap";
 import { Task, TaskList } from "./Tasks.jsx";
 import { useEffect, useState, useReducer } from "react";
 import Board from "./Board.jsx";
+import NewTaskForm from "./NewTaskForm.jsx";
 
 function MenuBar({ dispatcher }) {
   return (
@@ -54,9 +55,14 @@ export function MoreProductive() {
   function reducer(state, action) {
     switch (action.type) {
       case "add":
+        if (!action.payload || !action.payload.name) return state;
         const taskAdded = {
           id: state.tasks.length,
           name: action.payload.name,
+          desc: action.payload.desc,
+          estimated: action.payload.estimated,
+          planned: action.payload.planned,
+          real: action.payload.real,
           checked: false,
           status: { ...status.todo },
         };
@@ -131,11 +137,13 @@ export function MoreProductive() {
     [tasks]
   );
 
+  console.log(tasks);
   return (
     <>
       <Row>
         <Col>
-          <MenuBar dispatcher={dispatcher} />
+          {/* <MenuBar dispatcher={dispatcher} /> */}
+          <NewTaskForm dispatcher={dispatcher} />
         </Col>
       </Row>
       <Row>
