@@ -1,5 +1,6 @@
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import styles from "./MenuNavBar.module.css";
 
 export default function MenuNavBar(option, setOption) {
   return (
@@ -7,9 +8,9 @@ export default function MenuNavBar(option, setOption) {
       <Navbar expand="lg" className="bg-info">
         <Container>
           <Navbar.Brand>
-            <Link to="/">
+            <NavLink to="/">
               <img src="art1.jpg" width={100} />
-            </Link>
+            </NavLink>
             <em
               style={{
                 fontSize: "2em",
@@ -17,17 +18,17 @@ export default function MenuNavBar(option, setOption) {
                 paddingRight: "20px",
               }}
             >
-              &nbsp;Fitter, Happier
+              &nbsp;Fitter, Happier&nbsp;🎶
             </em>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Item>
-                <Link to="/why">Why ?</Link>
+            <Nav className="me-auto" gap={3}>
+              <Nav.Item as="div">
+                <NavLink to="/why">Why ?</NavLink>
               </Nav.Item>
-              <Nav.Item>
-                <Link to="/moreproductive">More Productive</Link>
+              <Nav.Item as="div">
+                <NavLink to="/moreproductive">More Productive</NavLink>
               </Nav.Item>
               {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

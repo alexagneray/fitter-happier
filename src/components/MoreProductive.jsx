@@ -1,8 +1,9 @@
 import { Row, Col, Navbar, Form, FormControl, Button } from "react-bootstrap";
 import { Task, TaskList } from "./Tasks.jsx";
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import Board from "./Board.jsx";
 import NewTaskForm from "./NewTaskForm.jsx";
+import { TasksContext } from "./Contexts.jsx";
 
 function MenuBar({ dispatcher }) {
   return (
@@ -137,9 +138,8 @@ export function MoreProductive() {
     [tasks]
   );
 
-  console.log(tasks);
   return (
-    <>
+    <TasksContext.Provider value={{ tasks: tasks }}>
       <Row>
         <Col>
           {/* <MenuBar dispatcher={dispatcher} /> */}
@@ -165,9 +165,9 @@ export function MoreProductive() {
       </Row>
       <Row>
         <Col>
-          <Board tasks={tasks} dispatcher={dispatcher} status={status} />
+          <Board dispatcher={dispatcher} status={status} />
         </Col>
       </Row>
-    </>
+    </TasksContext.Provider>
   );
 }

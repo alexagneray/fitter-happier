@@ -1,13 +1,16 @@
+import { useContext } from "react";
 import { Row, Col, Card } from "react-bootstrap";
+import { TasksContext } from "./Contexts.jsx";
 
-function Board({ tasks, dispatcher, status }) {
+function Board({ dispatcher, status }) {
+  const { tasks } = useContext(TasksContext);
   return (
     <Row>
       {Object.entries(status).map(([k, s]) => (
         <Col key={k}>
           <BoardColumn
             label={s.label}
-            tasks={tasks.filter((t) => !t.status.name.localeCompare(s.name))}
+            colTasks={tasks.filter((t) => !t.status.name.localeCompare(s.name))}
           />
         </Col>
       ))}
@@ -15,12 +18,12 @@ function Board({ tasks, dispatcher, status }) {
   );
 }
 
-function BoardColumn({ label, tasks }) {
+function BoardColumn({ label, colTasks }) {
   return (
     <Card>
       <Card.Header>{label}</Card.Header>
       <Card.Body>
-        {tasks.map((t) => (
+        {colTasks.map((t) => (
           <Card key={t.id}>
             <Card.Header>
               #{t.id} {t.name}
