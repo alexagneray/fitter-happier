@@ -26,12 +26,30 @@ function App() {
       </Row>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<GenericPage pageElem={<HomePage />} />} />
+          <Route
+            path="/"
+            element={
+              <GenericPage>
+                <HomePage />
+              </GenericPage>
+            }
+          />
           <Route
             path="/moreproductive"
-            element={<GenericPage pageElem={<MoreProductivePage />} />}
+            element={
+              <GenericPage>
+                <MoreProductivePage />
+              </GenericPage>
+            }
           />
-          <Route path="/why" element={<GenericPage pageElem={<WhyPage />} />} />
+          <Route
+            path="/why"
+            element={
+              <GenericPage>
+                <WhyPage />
+              </GenericPage>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </Container>

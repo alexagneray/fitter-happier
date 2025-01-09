@@ -1,10 +1,10 @@
 import React from "react";
 import MenuNavBar from "../components/MenuNavBar";
 
-function GenericPage({ pageElem }) {
+function GenericPage({ children }) {
   return (
     <>
-      <MenuNavBar /> {pageElem}
+      <MenuNavBar /> {children}
     </>
   );
 }
